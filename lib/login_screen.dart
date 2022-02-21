@@ -43,8 +43,42 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         body: SizedBox(
           width: double.infinity,
-          child: Row(
-            children: [],
+          child: Column(
+            children: [
+              const Text(
+                "hello guys this is a column elements",
+                style:
+                    TextStyle(fontSize: 20, backgroundColor: Colors.deepOrange),
+              ),
+              const Text(
+                "hello guys this is a column elements",
+                style:
+                    TextStyle(color:Colors.orangeAccent,fontSize: 20, backgroundColor: Colors.black),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: const [
+                  Text(
+                    "hello guys this is row inside a column",
+                    style: TextStyle(
+                        fontSize: 20, backgroundColor: Colors.deepOrange),
+                  ),
+                  Text(
+                    "hello guys this is row inside a column",
+                    style: TextStyle(
+                        fontSize: 20, backgroundColor: Colors.orangeAccent),
+                  ),
+                  Text(
+                    "hello guys this is row inside a column",
+                    style:
+                        TextStyle(fontSize: 20, backgroundColor: Colors.green),
+                  ),
+                ],
+              )
+            ],
           ),
         ));
   }
