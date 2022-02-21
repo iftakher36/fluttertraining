@@ -62,17 +62,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
                   Text(
-                    "hello guys this is row inside a column",
+                    "hello guys this is row element inside a column",
                     style: TextStyle(
                         fontSize: 20, backgroundColor: Colors.deepOrange),
                   ),
                   Text(
-                    "hello guys this is row inside a column",
+                    "hello guys this is row element inside a column",
                     style: TextStyle(
                         fontSize: 20, backgroundColor: Colors.orangeAccent),
                   ),
                   Text(
-                    "hello guys this is row inside a column",
+                    "hello guys this is row element inside a column",
                     style:
                         TextStyle(fontSize: 20, backgroundColor: Colors.green),
                   ),
