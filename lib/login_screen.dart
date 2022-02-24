@@ -17,90 +17,182 @@ class _LoginScreenState extends State<LoginScreen> {
   String change = "Hello Programmers";
   int counter = 0;
   double values = 8.0;
-  List name = ["Farhan", "Shahinur", "Rafi", "Hakim", "Riyad","Riyad","Riyad","Riyad","Riyad","Riyad","Riyad"];
+  List name = [
+    "Farhan",
+    "Shahinur",
+    "Rafi",
+    "Hakim",
+    "Riyad",
+    "Riyad",
+    "Riyad",
+    "Riyad",
+    "Riyad",
+    "Riyad",
+    "Riyad"
+  ];
 
   @override
   Widget build(BuildContext context) {
-    double sizes = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          title: Text(change),
-          leading: IconButton(
+      appBar: AppBar(
+        title: Text(change),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            _Hello;
+          },
+        ),
+        actions: [
+          IconButton(
             icon: const Icon(Icons.access_alarm_sharp),
             onPressed: () {
-              _Hello;
+              counter++;
+              values++;
+              change = "hello" + counter.toString();
+              setState(() {});
             },
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.access_alarm_sharp),
-              onPressed: () {
-                counter++;
-                values++;
-                change = "hello" + counter.toString();
-                setState(() {});
-              },
-            ),
-          ],
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Scrollbar(
-                isAlwaysShown: true,
-                child: GridView.builder(
-                    itemCount: name.length,
-                    gridDelegate:
-                         const SliverGridDelegateWithMaxCrossAxisExtent(
-                           maxCrossAxisExtent: 200,
-                           mainAxisSpacing: 30,
-                           childAspectRatio: 1
-                            ),
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: Text(name[index]),
-                      );
-                    }),
-              ),
-            ),
-         /*   Expanded(
-              child: SizedBox(
-                width: double.infinity,
-                child: Container(
-                  color: Colors.black,
-                  child: const Text("hello"),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Container(
-                        color: Colors.white,
-                        child: const Text("hello"),
-                      ),
+        ],
+      ),
+      body: Row(
+        children: [
+          Expanded(
+            child: Container(
+              color: Colors.red,
+              child: Column(
+                children: const [
+                  SizedBox(height: 20,),
+                  CircleAvatar(
+                    radius: 51,
+                    backgroundColor: Colors.black,
+                    child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage("https://www.vhv.rs/dpng/d/426-4263064_circle-avatar-png-picture-circle-avatar-image-png.png",scale: 1)
                     ),
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Container(
-                        color: Colors.blue,
-                        child: const Text("hello"),
+                  TextField(
+                    style: TextStyle(color: Colors.blue),
+                    cursorColor: Colors.blue,
+                    decoration: InputDecoration(
+                      labelText: "UserName",
+                      focusColor: Colors.black,
+                      labelStyle: TextStyle(
+                        color: Color(0xFF0f0f0f),
                       ),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue)),
+                      prefixIcon: Icon(Icons.supervised_user_circle,
+                          color: Color(0xC3000000)),
                     ),
                   ),
+                  TextField(
+                      style: TextStyle(color: Colors.blue),
+                      cursorColor: Colors.blue,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        focusColor: Colors.black,
+                        labelStyle: TextStyle(
+                          color: Color(0xFF0f0f0f),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black)),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue)),
+                        prefixIcon: Icon(Icons.lock,
+                            color: Color(0xC3000000)),
+                      )),
                 ],
               ),
-            )*/
-          ],
-        ));
+            ),
+          ),
+          Expanded(
+              child: Container(
+                color: Colors.blue,
+                child: Column(
+            children: const [
+                TextField(
+                  style: TextStyle(color: Colors.blue),
+                  cursorColor: Colors.blue,
+                  decoration: InputDecoration(
+                    labelText: "UserName",
+                    focusColor: Colors.black,
+                    labelStyle: TextStyle(
+                      color: Color(0xFF0f0f0f),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                    prefixIcon: Icon(Icons.supervised_user_circle,
+                        color: Color(0xC3000000)),
+                  ),
+                ),
+                TextField(
+                    style: TextStyle(color: Colors.blue),
+                    cursorColor: Colors.blue,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      focusColor: Colors.black,
+                      labelStyle: TextStyle(
+                        color: Color(0xFF0f0f0f),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue)),
+                      prefixIcon: Icon(Icons.lock,
+                          color: Color(0xC3000000)),
+                    )),
+            ],
+          ),
+              )),
+          Expanded(child: Container(
+            color: Colors.orangeAccent,
+            child: Column(
+              children:  [
+                TextField(
+                  style: TextStyle(color: Colors.blue),
+                  cursorColor: Colors.blue,
+                  decoration: InputDecoration(
+                    labelText: "UserName",
+                    focusColor: Colors.black,
+                    labelStyle: TextStyle(
+                      color: Color(0xFF0f0f0f),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue)),
+                    prefixIcon: Icon(Icons.supervised_user_circle,
+                        color: Color(0xC3000000)),
+                  ),
+                ),
+                TextField(
+                    style: TextStyle(color: Colors.blue),
+                    cursorColor: Colors.blue,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      focusColor: Colors.black,
+                      labelStyle: TextStyle(
+                        color: Color(0xFF0f0f0f),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue)),
+                      prefixIcon: Icon(Icons.lock,
+                          color: Color(0xC3000000)),
+                    )),
+              ],
+            ),
+          )),
+        ],
+      ),
+    );
   }
 }
