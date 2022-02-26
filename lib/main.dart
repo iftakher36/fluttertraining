@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:second/app_theme.dart';
 import 'package:second/dashboard_screen.dart';
 
 void main() {
@@ -14,9 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       home: const DashBoardScreen(),
     );
   }
