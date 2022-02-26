@@ -41,26 +41,26 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
     return Scaffold(
         drawer: size < 768
-            ? const Drawer(
-                child: SignUp(),
-              )
+            ? const SafeArea(
+              child: Drawer(
+                  child: SignUp(),
+                ),
+            )
             : null,
         appBar: AppBar(
           title: Text(change),
           leading: size > 768
               ? null
-              : Builder(
-                builder: (context) {
+              : Builder(builder: (context) {
                   return IconButton(
-                      icon: const Icon(Icons.menu),
-                      onPressed: () {
-                        if (!Scaffold.of(context).isDrawerOpen) {
-                          Scaffold.of(context).openDrawer();
-                        }
-                      },
-                    );
-                }
-              ),
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {
+                      if (!Scaffold.of(context).isDrawerOpen) {
+                        Scaffold.of(context).openDrawer();
+                      }
+                    },
+                  );
+                }),
           actions: [
             IconButton(
               icon: const Icon(Icons.access_alarm_sharp),
@@ -137,7 +137,6 @@ class SignUp extends StatelessWidget {
     return Container(
       width: 250,
       color: Colors.white,
-      height: double.infinity,
       child: Column(
         children: [
           SingleChildScrollView(
