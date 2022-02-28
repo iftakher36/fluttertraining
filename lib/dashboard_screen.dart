@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:second/details.dart';
 import 'package:second/grid_layout.dart';
 
 import 'listview_layout.dart';
@@ -42,10 +43,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     return Scaffold(
         drawer: size < 768
             ? const SafeArea(
-              child: Drawer(
+                child: Drawer(
                   child: SignUp(),
                 ),
-            )
+              )
             : null,
         appBar: AppBar(
           title: Text(change),
@@ -204,7 +205,10 @@ class SignUp extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all(
                               const Color(0xFF000000)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => const DetailsScreen()));
+                        },
                         child: const Text(
                           "Log In",
                           style: TextStyle(color: Colors.white),

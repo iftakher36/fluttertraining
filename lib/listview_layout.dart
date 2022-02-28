@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ListViewLayout extends StatelessWidget {
   const ListViewLayout({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class ListViewLayout extends StatelessWidget {
         itemBuilder: (rafi,index){
           return Card(
             child: ListTile(
-              leading:Image.asset("img/biriyani.jpg"),
+              leading:SvgPicture.asset("img/yellow.svg"),
               title: const Text("hello"),
               trailing: const Text("hello"),
             ),
