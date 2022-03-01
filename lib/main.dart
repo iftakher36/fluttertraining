@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:second/app_theme.dart';
-import 'package:second/dashboard_screen.dart';
+import 'package:second/screen/dashboard_screen.dart';
+import 'package:second/screen/details.dart';
+import 'package:second/screen/profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +20,13 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const DashBoardScreen(),
+      initialRoute: "dash",
+      routes:  {
+        "dash": (ctx)=> const DashBoardScreen(),
+        "profile": (ctx)=> const Profile(),
+        "details": (shahin)=> const  DetailsScreen(),
+        "login": (ctx)=> const SignUp(),
+      },
     );
   }
 }

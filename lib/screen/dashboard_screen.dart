@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:second/details.dart';
+import 'package:second/data_model.dart';
+import 'package:second/screen/details.dart';
 import 'package:second/grid_layout.dart';
 
-import 'listview_layout.dart';
+import '../listview_layout.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
@@ -206,8 +207,8 @@ class SignUp extends StatelessWidget {
                               const Color(0xFF000000)),
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (ctx) => const DetailsScreen()));
+
+                          Navigator.of(context).pushNamed("details",arguments: UserData("Farhan rafi","*******","farhan@gmail.com"));
                         },
                         child: const Text(
                           "Log In",
