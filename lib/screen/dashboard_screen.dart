@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:location/location.dart' as rafi;
 import 'package:second/data_model.dart';
-import 'package:second/screen/details.dart';
 import 'package:second/grid_layout.dart';
 
 import '../listview_layout.dart';
@@ -14,11 +15,8 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-  void _Hello() {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text("hello")));
-  }
-
+  rafi.LocationData? currentLoc;
+  String? address;
   String change = "Hello Programmers";
   int counter = 0;
   double size = 0.0;
@@ -36,6 +34,53 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     "Riyad",
     "Riyad"
   ];
+
+  Future<String> _getAddress(double? lat, double? lang) async {
+    if (lat == null || lang == null) return "";
+
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(lat, lang, localeIdentifier: "en");
+
+    print(placemarks.length);
+    Placemark placeMark = placemarks[1];
+    return "${placeMark.street}, ${placeMark.subLocality}, ${placeMark.locality},${placeMark.country}";
+  }
+
+  void _getLocation() {
+    getLocationData().then((value) => setState(() {
+          currentLoc = value;
+          _getAddress(currentLoc?.latitude, currentLoc?.longitude)
+              .then((value) => address = value);
+        }));
+  }
+
+  Future<rafi.LocationData?> getLocationData() async {
+    rafi.Location location = rafi.Location();
+
+    bool _serviceEnabled;
+    rafi.PermissionStatus _permissionGranted;
+    rafi.LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return null;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == rafi.PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != rafi.PermissionStatus.granted) {
+        return null;
+      }
+    }
+
+    _locationData = await location.getLocation();
+
+    return _locationData;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,19 +142,19 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         child: SizedBox(
                           height: 100,
                           child: Row(
-                            children: const [
-                              Padding(
-                                padding: EdgeInsets.only(left: 10),
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const CircleAvatar(
+                                radius: 31,
+                                backgroundColor: Colors.black,
                                 child: CircleAvatar(
-                                  radius: 31,
-                                  backgroundColor: Colors.black,
-                                  child: CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage: NetworkImage(
-                                          "https://www.vhv.rs/dpng/d/426-4263064_circle-avatar-png-picture-circle-avatar-image-png.png",
-                                          scale: 1)),
-                                ),
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(
+                                        "https://www.vhv.rs/dpng/d/426-4263064_circle-avatar-png-picture-circle-avatar-image-png.png",
+                                        scale: 1)),
                               ),
+                              SizedBox(width: 80,
+                                  child: Text(address!,style: const TextStyle(fontSize: 10),))
                             ],
                           ),
                         ),
@@ -126,6 +171,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 )),
           ],
         ));
+  }
+
+  @override
+  void initState() {
+    _getLocation();
+    super.initState();
   }
 }
 
@@ -207,8 +258,9 @@ class SignUp extends StatelessWidget {
                               const Color(0xFF000000)),
                         ),
                         onPressed: () {
-
-                          Navigator.of(context).pushNamed("details",arguments: UserData("Farhan rafi","*******","farhan@gmail.com"));
+                          Navigator.of(context).pushNamed("details",
+                              arguments: UserData("Farhan rafi", "*******",
+                                  "farhan@gmail.com"));
                         },
                         child: const Text(
                           "Log In",
