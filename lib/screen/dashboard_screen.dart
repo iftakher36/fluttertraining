@@ -4,7 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:location/location.dart' as rafi;
 import 'package:second/data_model.dart';
 import 'package:second/grid_layout.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../listview_layout.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -18,6 +18,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   rafi.LocationData? currentLoc;
   String? address;
   String change = "Hello Programmers";
+  String? data;
   int counter = 0;
   double size = 0.0;
   double values = 8.0;
@@ -34,6 +35,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     "Riyad",
     "Riyad"
   ];
+  SharedPreferences? sharedPreferences;
 
   Future<String> _getAddress(double? lat, double? lang) async {
     if (lat == null || lang == null) return "";
@@ -44,6 +46,21 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     print(placemarks.length);
     Placemark placeMark = placemarks[1];
     return "${placeMark.street}, ${placeMark.subLocality}, ${placeMark.locality},${placeMark.country}";
+  }
+
+  void getSharedpref() async {
+    await SharedPreferences.getInstance().then((value) {
+      sharedPreferences = value;
+      getData();
+    });
+  }
+
+  void setData() async {
+    await sharedPreferences?.setString("name", "Reyad Ahammed");
+  }
+
+  void getData() {
+    data = sharedPreferences?.getString("name");
   }
 
   void _getLocation() {
@@ -85,7 +102,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size.width;
-
     return Scaffold(
         drawer: size < 768
             ? const SafeArea(
@@ -95,7 +111,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
               )
             : null,
         appBar: AppBar(
-          title: Text(change),
+          title: Text(data == null ? "----" : ""+data!),
           leading: size > 768
               ? null
               : Builder(builder: (context) {
@@ -112,6 +128,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             IconButton(
               icon: const Icon(Icons.access_alarm_sharp),
               onPressed: () {
+                setData();
                 counter++;
                 values++;
                 change = "hello" + counter.toString();
@@ -153,8 +170,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                         "https://www.vhv.rs/dpng/d/426-4263064_circle-avatar-png-picture-circle-avatar-image-png.png",
                                         scale: 1)),
                               ),
-                              SizedBox(width: 80,
-                                  child: Text(address!,style: const TextStyle(fontSize: 10),))
+                              SizedBox(
+                                  width: 80,
+                                  child: Text(
+                                    address!,
+                                    style: const TextStyle(fontSize: 10),
+                                  ))
                             ],
                           ),
                         ),
@@ -176,6 +197,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   @override
   void initState() {
     _getLocation();
+    getSharedpref();
     super.initState();
   }
 }
