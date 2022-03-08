@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:second/app_theme.dart';
 import 'package:second/screen/dashboard_screen.dart';
+import 'package:second/screen/data_screen.dart';
 import 'package:second/screen/details.dart';
 import 'package:second/screen/profile.dart';
 
@@ -10,6 +11,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -19,14 +21,14 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      initialRoute: "dash",
-      routes:  {
-        "dash": (ctx)=> const DashBoardScreen(),
-        "profile": (ctx)=> const Profile(),
-        "details": (shahin)=> const  DetailsScreen(),
-        "login": (ctx)=> const SignUp(),
+      initialRoute: "data",
+      routes: {
+        "data": (ctx) => const DataScreen(),
+        "dash": (ctx) => const DashBoardScreen(),
+        "profile": (ctx) => const Profile(),
+        "details": (shahin) => const DetailsScreen(),
+        "login": (ctx) => const SignUp(),
       },
     );
   }
 }
-
