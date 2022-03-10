@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:location/location.dart' as rafi;
+import 'package:provider/provider.dart';
+import 'package:second/Providers/data_provider.dart';
 import 'package:second/data_model.dart';
 import 'package:second/grid_layout.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,9 +19,6 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen> {
   rafi.LocationData? currentLoc;
   String? address;
-  String change = "Hello Programmers";
-  String? data;
-  int counter = 0;
   double size = 0.0;
   double values = 8.0;
   List name = [
@@ -35,7 +34,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     "Riyad",
     "Riyad"
   ];
-  SharedPreferences? sharedPreferences;
 
   Future<String> _getAddress(double? lat, double? lang) async {
     if (lat == null || lang == null) return "";
@@ -48,26 +46,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     return "${placeMark.street}, ${placeMark.subLocality}, ${placeMark.locality},${placeMark.country}";
   }
 
-  void getSharedpref() async {
-    await SharedPreferences.getInstance().then((value) {
-      sharedPreferences = value;
-      getData();
-    });
-  }
-
-  void setData() async {
-    await sharedPreferences?.setString("name", "Reyad Ahammed");
-  }
-
-  void getData() {
-    data = sharedPreferences?.getString("name");
-  }
-
   void _getLocation() {
     getLocationData().then((value) => setState(() {
           currentLoc = value;
           _getAddress(currentLoc?.latitude, currentLoc?.longitude)
-              .then((value) => address = value);
+              .then((value) {
+            setState(() {
+              address = value;
+            });
+          });
         }));
   }
 
@@ -103,101 +90,121 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size.width;
     return Scaffold(
-        drawer: size < 768
-            ? const SafeArea(
-                child: Drawer(
-                  child: SignUp(),
-                ),
-              )
-            : null,
-        appBar: AppBar(
-          title: Text(data == null ? "----" : ""+data!),
-          leading: size > 768
-              ? null
-              : Builder(builder: (context) {
-                  return IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () {
-                      if (!Scaffold.of(context).isDrawerOpen) {
-                        Scaffold.of(context).openDrawer();
-                      }
-                    },
-                  );
-                }),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.access_alarm_sharp),
-              onPressed: () {
-                setData();
-                counter++;
-                values++;
-                change = "hello" + counter.toString();
-                setState(() {});
+      drawer: size < 768
+          ? const SafeArea(
+              child: Drawer(
+                child: SignUp(),
+              ),
+            )
+          : null,
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Consumer<DashBoardProvider>(
+              builder: (_, dash, child) {
+                return Text(dash.data == null ? "----" : "" + dash.data!);
               },
             ),
+            Spacer(),
+            Text(
+                "" + Provider.of<DashBoardProvider>(context).counts.toString()),
           ],
         ),
-        body: Row(
-          children: [
-            size > 768
-                ? const Expanded(
-                    flex: 2,
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: SignUp(),
-                    ),
-                  )
-                : Container(),
-            Expanded(
-                flex: 5,
-                child: Container(
-                  color: Colors.blue,
-                  child: Column(
-                    children: [
-                      Card(
-                        color: Colors.white,
-                        child: SizedBox(
-                          height: 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              const CircleAvatar(
-                                radius: 31,
-                                backgroundColor: Colors.black,
-                                child: CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(
-                                        "https://www.vhv.rs/dpng/d/426-4263064_circle-avatar-png-picture-circle-avatar-image-png.png",
-                                        scale: 1)),
-                              ),
-                              SizedBox(
-                                  width: 80,
-                                  child: Text(
-                                    address!,
-                                    style: const TextStyle(fontSize: 10),
-                                  ))
-                            ],
-                          ),
+        leading: size > 768
+            ? null
+            : Builder(builder: (context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    if (!Scaffold.of(context).isDrawerOpen) {
+                      Scaffold.of(context).openDrawer();
+                    }
+                  },
+                );
+              }),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.access_alarm_sharp),
+            onPressed: () {
+              Provider.of<DashBoardProvider>(context,listen: false).setData();
+              setState(() {});
+            },
+          ),
+        ],
+      ),
+      body: Row(
+        children: [
+          size > 768
+              ? const Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: SignUp(),
+                  ),
+                )
+              : Container(),
+          Expanded(
+              flex: 5,
+              child: Container(
+                color: Colors.blue,
+                child: Column(
+                  children: [
+                    Card(
+                      color: Colors.white,
+                      child: SizedBox(
+                        height: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const CircleAvatar(
+                              radius: 31,
+                              backgroundColor: Colors.black,
+                              child: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: NetworkImage(
+                                      "https://www.vhv.rs/dpng/d/426-4263064_circle-avatar-png-picture-circle-avatar-image-png.png",
+                                      scale: 1)),
+                            ),
+                            SizedBox(
+                                width: 80,
+                                child: Text(
+                                  address != null ? address! : "---",
+                                  style: const TextStyle(fontSize: 10),
+                                ))
+                          ],
                         ),
                       ),
-                      const Flexible(child: ListViewLayout())
-                    ],
-                  ),
-                )),
-            Expanded(
-                flex: 2,
-                child: Container(
-                  color: Colors.orangeAccent,
-                  child: const GridLayout(),
-                )),
-          ],
-        ));
+                    ),
+                    const Flexible(child: ListViewLayout())
+                  ],
+                ),
+              )),
+          Expanded(
+              flex: 2,
+              child: Container(
+                color: Colors.orangeAccent,
+                child: const GridLayout(),
+              )),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        onPressed: () {
+          Provider.of<DashBoardProvider>(context, listen: false)
+              .setCountIncrement();
+        },
+        child: const Icon(
+          Icons.add,
+          color: Colors.black45,
+        ),
+      ),
+    );
   }
 
   @override
   void initState() {
     _getLocation();
-    getSharedpref();
+    Provider.of<DashBoardProvider>(context, listen: false).getSharedpref();
     super.initState();
   }
 }

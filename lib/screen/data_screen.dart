@@ -45,18 +45,41 @@ class _DataScreenState extends State<DataScreen> {
     attendance = Attendance.fromJson(response.data);
   }
 
+  void post() async {
+    var data = FormData.fromMap(
+        {"Email": "hasanrafi1101@gmail.com", "Password": "Abc@123"});
+
+    var response = await dio.post(
+        "https://www.gtrbd.net/support/api/EasyHR/Login",
+        data: data,
+    );
+    print(response);
+  }
+  void get() async {
+    var response = await dio.get(
+        "https://www.gtrbd.net/support/api/EasyHR/GetUserInfo/20d43fc1-790d-402a-8166-4eaf84599d7d/84d6348e-c61c-49ed-bf45-d6a791b0116f_",
+        options: Options(headers: {'Accept': '*/*'}));
+    print(response);
+  }
+
   @override
   Widget build(BuildContext context) {
     getLoginData();
+    post();
+    get();
     return Scaffold(
       body: SafeArea(
         child: ListView.builder(
             itemCount: attendance?.attendanceList.length,
             itemBuilder: (_, index) {
-              return  Card(
+              return Card(
                 child: ListTile(
-                  leading: Text(attendance!.attendanceList[index].inTime,style: const TextStyle(fontSize: 10),),
-                  trailing: Text(attendance!.attendanceList[index].locationName,style: const TextStyle(fontSize: 10)),
+                  leading: Text(
+                    attendance!.attendanceList[index].inTime,
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                  trailing: Text(attendance!.attendanceList[index].locationName,
+                      style: const TextStyle(fontSize: 10)),
                 ),
               );
             }),

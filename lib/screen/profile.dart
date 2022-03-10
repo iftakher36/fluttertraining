@@ -4,6 +4,8 @@ import 'dart:io' as ioImage;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:second/Providers/data_provider.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -27,8 +29,7 @@ class _ProfileState extends State<Profile> {
     final bytes = ioImage.File(imageData!.path).readAsBytesSync();
     data = base64Encode(bytes);
     print(data);
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -40,7 +41,11 @@ class _ProfileState extends State<Profile> {
             onTap: () {
               pickImage();
             },
-            child: const Text("Profile"),
+            child: Consumer<DashBoardProvider>(
+              builder: (_, data, child) {
+                return Text(data.counts.toString());
+              },
+            ),
           ),
           imageData == null
               ? Container()
